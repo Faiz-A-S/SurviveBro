@@ -10,6 +10,7 @@ public class PlayerManager : MonoBehaviour
     [Tooltip("normal 0.05")]
     public float bulletRate = 0.25f;
     public float bulletSpeed = 100f;
+    public float range = 20f;
     public Camera cameraMain;
     public LayerMask groundMask;
     public Rigidbody bullet;
@@ -31,6 +32,7 @@ public class PlayerManager : MonoBehaviour
         Fire();
         Move();
         Look();
+        
     }
 
     private void Fire()
@@ -41,6 +43,7 @@ public class PlayerManager : MonoBehaviour
             Rigidbody bullets = Instantiate(bullet, muzzle.position, muzzle.rotation);
             bullets.velocity = transform.TransformDirection(Vector3.forward * bulletSpeed);
             Destroy(bullets.gameObject, 5f);
+            
         }
     }
 

@@ -6,10 +6,14 @@ using UnityEngine;
 public class Spawner : MonoBehaviour
 {
     public GameObject enemy;
+    public Transform player;
     public int maxEnemyOnField;
     public int enemyOnField;
     public int spawnRate;
+    public float rotationSpeed;
+
     private float timer = 0;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -27,6 +31,9 @@ public class Spawner : MonoBehaviour
             timer = 0;
             enemyOnField += 1;
         }
+
+        transform.RotateAround(player.position,new Vector3(0,1,0), rotationSpeed * Time.deltaTime);
+
     }
 
     private void Spawn()
