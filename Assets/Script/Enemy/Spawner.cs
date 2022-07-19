@@ -47,7 +47,6 @@ public class Spawner : MonoBehaviour
                 enemys.SetActive(true);
                 timer = 0;
                 enemyOnField += 1;
-                
             }
             if (enemyOnField == 0)
             {

@@ -10,7 +10,7 @@ public class PlayerManager : MonoBehaviour
     [Tooltip("normal 0.05")]
     public float bulletRate = 0.25f;
     public float bulletSpeed = 100f;
-    public float range = 20f;
+    public float bulletLife = 2f;
     public Camera cameraMain;
     public LayerMask groundMask;
     public Rigidbody bullet;
@@ -18,12 +18,14 @@ public class PlayerManager : MonoBehaviour
 
     private CharacterController charcon;
     private float nextFire;
+    private Transform groundCheck;
 
 
     // Start is called before the first frame update
     void Start()
     {
         charcon = GetComponent<CharacterController>();
+        groundCheck = GetComponentInChildren<Transform>();
     }
 
     // Update is called once per frame
@@ -32,7 +34,7 @@ public class PlayerManager : MonoBehaviour
         Fire();
         Move();
         Look();
-        
+        Gravity();
     }
 
     private void Fire()
@@ -42,8 +44,7 @@ public class PlayerManager : MonoBehaviour
             nextFire = Time.time + bulletRate;
             Rigidbody bullets = Instantiate(bullet, muzzle.position, muzzle.rotation);
             bullets.velocity = transform.TransformDirection(Vector3.forward * bulletSpeed);
-            Destroy(bullets.gameObject, 5f);
-            
+            Destroy(bullets.gameObject, bulletLife);
         }
     }
 
@@ -72,6 +73,14 @@ public class PlayerManager : MonoBehaviour
             returnPos = hitInfo.point;
         }
     }
+    private void Gravity()
+    {
+        bool onGround = Physics.CheckSphere(groundCheck.position, 0.5f, groundMask);
+        if(!onGround)
+        {
+            charcon.Move(Vector3.down * 6f * Time.deltaTime);
+        }
+    }
     private void Move()
     {
         if(Input.GetKey(KeyCode.W))
@@ -90,5 +99,20 @@ public class PlayerManager : MonoBehaviour
         {
             charcon.Move(Vector3.back * speed * Time.deltaTime);
         }
+    }
+
+    private void GetHit()
+    {
+        if(health <= 0)
+        {
+            Time.timeScale = 0;
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        health -= 1;
+        Destroy(other.gameObject);
+        GetHit();
     }
 }

@@ -20,6 +20,7 @@ public class EnemyManager : MonoBehaviour
     {
         var followSpeed = speed * Time.deltaTime;
         transform.position = Vector3.MoveTowards(transform.position, player.position, followSpeed);
+        transform.LookAt(player);
         if(health <= 0)
         {
             EnemyDie();
@@ -34,7 +35,10 @@ public class EnemyManager : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        health -= 1;
-        Destroy(other.gameObject);
+        if (other.CompareTag("PlayerBullet"))
+        {
+            health -= 1;
+            Destroy(other.gameObject);
+        }
     }
 }
