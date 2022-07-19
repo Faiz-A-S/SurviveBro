@@ -8,6 +8,7 @@ public class EnemyManager : MonoBehaviour
     public int health = 10;
     public float speed = 3.5f;
     public Spawner spawn;
+    public int Cost;
     // Start is called before the first frame update
     void Start()
     {
