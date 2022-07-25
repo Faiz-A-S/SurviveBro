@@ -8,16 +8,28 @@ public class PlayerManager : MonoBehaviour
     public int health = 100;
     public float speed;
     [Tooltip("normal 0.05")]
+    [Header("Dar dar weapon")]
     public float bulletRate = 0.25f;
     public float bulletSpeed = 100f;
     public float bulletLife = 2f;
-    public Camera cameraMain;
-    public LayerMask groundMask;
     public Rigidbody bullet;
     public Transform muzzle;
 
+    [Header("Mortar weapon")]
+    public float bulletRateMortar = 0.25f;
+    public float bulletSpeedMortar = 100f;
+    public float bulletLifeMortar = 2f;
+    public Rigidbody bulletMortar;
+    public Transform muzzleMortar;
+
+    [Space]
+    public Camera cameraMain;
+    public LayerMask groundMask;
+    
+
     private CharacterController charcon;
     private float nextFire;
+    private float nextFireMortar;
     private Transform groundCheck;
 
 
@@ -45,6 +57,13 @@ public class PlayerManager : MonoBehaviour
             Rigidbody bullets = Instantiate(bullet, muzzle.position, muzzle.rotation);
             bullets.velocity = transform.TransformDirection(Vector3.forward * bulletSpeed);
             Destroy(bullets.gameObject, bulletLife);
+        }
+
+        if(Input.GetKeyDown(KeyCode.Space) && Time.time > nextFireMortar)
+        {
+            nextFireMortar = Time.time + bulletRateMortar;
+            Rigidbody bullets = Instantiate(bulletMortar, muzzleMortar.position, muzzleMortar.rotation);
+            bullets.AddForce(transform.TransformDirection(new Vector3(0,1,1)* bulletSpeedMortar));
         }
     }
 

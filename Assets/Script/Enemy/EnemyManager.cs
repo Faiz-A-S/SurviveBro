@@ -37,7 +37,7 @@ public class EnemyManager : MonoBehaviour
     {
         if (other.CompareTag("PlayerBullet"))
         {
-            health -= 1;
+            health -= other.gameObject.GetComponent<Damage>().damage;
             Destroy(other.gameObject);
         }
     }
